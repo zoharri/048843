@@ -136,15 +136,15 @@ def main():
     """
     The main function
     """
-    deltas = [0.01]
-    # deltas = [0.1, 0.01]
-    Ks = [100]
-    # Ks = [2, 10, 100]
-    algos = ["ucbv"]
-    # algos = ["greedy", "ucb1", "ucbv", "thompson1"]
+    # deltas = [0.01]
+    deltas = [0.1, 0.01]
+    # Ks = [100]
+    Ks = [2, 10, 100]
+    # algos = ["ucbv"]
+    algos = ["greedy", "ucb1", "ucbv", "thompson1"]
 
     T = 10 ** 7
-    num_repeat = 1
+    num_repeat = 10
 
     tot_num_proc = num_repeat*len(algos)*len(Ks)*len(deltas)
     num_par_proc = 1
