@@ -92,8 +92,8 @@ def run_ucbv(statistics, c, b, delta, num_steps):
     :param num_steps: number of times to run the algorithm
     :return: returns the statistics after the run
     """
-    for _ in tqdm(range(num_steps)):
-    # for _ in range(num_steps):
+    # for _ in tqdm(range(num_steps)):
+    for _ in range(num_steps):
         t = statistics.t + 1
         averages = statistics.averages
         em_vars = statistics.em_vars
