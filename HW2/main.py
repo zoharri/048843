@@ -62,8 +62,12 @@ def plot_all_graphs(deltas, Ks, algos, num_repeat):
                 # plot_means(all_stats, al_idx)
 
     plt.figure("regrets")
+    plt.figlegend(["greedy", "ucb1", "ucbv", "thompson a=b=1"], loc='lower center', ncol=5, labelspacing=0.)
+    plt.suptitle("Regrets")
     plt.savefig("./results/regrets.png")
     plt.figure("exploration_index")
+    plt.suptitle("Exploration Index")
+    plt.figlegend(["greedy", "ucb1", "ucbv", "thompson a=b=1"], loc='lower center', ncol=5, labelspacing=0.)
     plt.savefig("./results/exploration_index.png")
     # plt.figure("means")
     # plt.savefig("./results/means.png")
@@ -146,10 +150,10 @@ def main():
     T = 10 ** 7
     num_repeat = 10
 
-    tot_num_proc = num_repeat*len(algos)*len(Ks)*len(deltas)
-    num_par_proc = 1
-    Parallel(n_jobs=num_par_proc, verbose=10)(delayed(run_algo_par)(i, deltas, Ks, algos, num_repeat, T) for i in range(tot_num_proc))
-    # plot_all_graphs(deltas, Ks, algos, num_repeat)
+    # tot_num_proc = num_repeat*len(algos)*len(Ks)*len(deltas)
+    # num_par_proc = 10
+    # Parallel(n_jobs=num_par_proc, verbose=10)(delayed(run_algo_par)(i, deltas, Ks, algos, num_repeat, T) for i in range(tot_num_proc))
+    plot_all_graphs(deltas, Ks, algos, num_repeat)
 
 
 if __name__ == '__main__':
