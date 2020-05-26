@@ -145,15 +145,16 @@ def main():
     # Ks = [100]
     Ks = [2, 10, 100]
     # algos = ["ucbv"]
-    algos = ["greedy", "ucb1", "ucbv", "thompson1"]
+    # algos = ["greedy", "ucb1", "ucbv", "thompson1"]
+    algos = ["thompson2", "thompson3"]
 
     T = 10 ** 7
-    num_repeat = 10
+    num_repeat = 1
 
-    # tot_num_proc = num_repeat*len(algos)*len(Ks)*len(deltas)
-    # num_par_proc = 10
-    # Parallel(n_jobs=num_par_proc, verbose=10)(delayed(run_algo_par)(i, deltas, Ks, algos, num_repeat, T) for i in range(tot_num_proc))
-    plot_all_graphs(deltas, Ks, algos, num_repeat)
+    tot_num_proc = num_repeat*len(algos)*len(Ks)*len(deltas)
+    num_par_proc = 10
+    Parallel(n_jobs=num_par_proc, verbose=10)(delayed(run_algo_par)(i, deltas, Ks, algos, num_repeat, T) for i in range(tot_num_proc))
+    # plot_all_graphs(deltas, Ks, algos, num_repeat)
 
 
 if __name__ == '__main__':

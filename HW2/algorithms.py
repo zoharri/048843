@@ -27,6 +27,14 @@ def run_algorithm(alg_name, delta, K, num_steps):
         alpha = 1
         beta = alpha
         statistics = run_thompson_sampling(statistics, alpha, beta, K, delta, num_steps)
+    elif alg_name == "thompson2":
+        alpha = 2
+        beta = alpha
+        statistics = run_thompson_sampling(statistics, alpha, beta, K, delta, num_steps)
+    elif alg_name == "thompson3":
+        alpha = 3
+        beta = alpha
+        statistics = run_thompson_sampling(statistics, alpha, beta, K, delta, num_steps)
     elif alg_name == "ucbv":
         b = 1
         c = 1
