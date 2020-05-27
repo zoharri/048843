@@ -51,10 +51,12 @@ def plot_all_graphs(deltas, Ks, algos, num_repeat):
                         all_stats.append(statistics)
                 plt.figure("regrets")
                 plt.subplot(rows_num, cols_num, r*cols_num + c + 1)
+                plt.title("K = {}, delta = {}".format(K, delta))
                 plot_regret(all_stats, delta, al_idx)
 
                 plt.figure("exploration_index")
                 plt.subplot(rows_num, cols_num, r * cols_num + c + 1)
+                plt.title("K = {}, delta = {}".format(K, delta))
                 plot_exploration_index(all_stats, al_idx)
 
                 # plt.figure("means")
@@ -62,12 +64,12 @@ def plot_all_graphs(deltas, Ks, algos, num_repeat):
                 # plot_means(all_stats, al_idx)
 
     plt.figure("regrets")
-    plt.figlegend(["greedy", "ucb1", "ucbv", "thompson a=b=1"], loc='lower center', ncol=5, labelspacing=0.)
+    plt.figlegend(["greedy", "ucb1", "ucbv", "thompson a=b=1", "thompson a=b=2", "thompson a=b=3"], loc='lower center', ncol=5, labelspacing=0.)
     plt.suptitle("Regrets")
     plt.savefig("./results/regrets.png")
     plt.figure("exploration_index")
     plt.suptitle("Exploration Index")
-    plt.figlegend(["greedy", "ucb1", "ucbv", "thompson a=b=1"], loc='lower center', ncol=5, labelspacing=0.)
+    plt.figlegend(["greedy", "ucb1", "ucbv", "thompson a=b=1", "thompson a=b=2", "thompson a=b=3"], loc='lower center', ncol=5, labelspacing=0.)
     plt.savefig("./results/exploration_index.png")
     # plt.figure("means")
     # plt.savefig("./results/means.png")
@@ -81,7 +83,7 @@ def plot_regret(all_stats, delta, al_idx):
     :param al_idx: the index of the algorithm for deciding the color of the plot
     :return:
     """
-    colors = ["red", "blue", "green", "yellow"]
+    colors = ["red", "blue", "green", "yellow", "k", "c"]
     T = len(all_stats[0].history)
     regrets = np.zeros([len(all_stats), T])
     for idx, statistics in enumerate(all_stats):
@@ -102,7 +104,7 @@ def plot_exploration_index(all_stats, al_idx):
     :param al_idx: the index of the algorithm for deciding the color of the plot
     :return:
     """
-    colors = ["red", "blue", "green", "yellow"]
+    colors = ["red", "blue", "green", "yellow", "k", "c"]
     T = len(all_stats[0].history)
     eis = np.zeros([len(all_stats), T])
     for idx, statistics in enumerate(all_stats):
@@ -123,7 +125,7 @@ def plot_means(all_stats, al_idx):
     :param al_idx: the index of the algorithm for deciding the color of the plot
     :return:
     """
-    colors = ["red", "blue", "green", "yellow"]
+    colors = ["red", "blue", "green", "yellow", "k", "c"]
     T = len(all_stats[0].history)
     all_means = all_stats[0].all_averages
     all_vars = all_stats[0].all_variances
@@ -145,16 +147,16 @@ def main():
     # Ks = [100]
     Ks = [2, 10, 100]
     # algos = ["ucbv"]
-    # algos = ["greedy", "ucb1", "ucbv", "thompson1"]
-    algos = ["thompson2", "thompson3"]
+    algos = ["greedy", "ucb1", "ucbv", "thompson1", "thompson2", "thompson3"]
+    # algos = ["thompson2", "thompson3"]
 
     T = 10 ** 7
-    num_repeat = 1
+    num_repeat = 10
 
-    tot_num_proc = num_repeat*len(algos)*len(Ks)*len(deltas)
-    num_par_proc = 10
-    Parallel(n_jobs=num_par_proc, verbose=10)(delayed(run_algo_par)(i, deltas, Ks, algos, num_repeat, T) for i in range(tot_num_proc))
-    # plot_all_graphs(deltas, Ks, algos, num_repeat)
+    # tot_num_proc = num_repeat*len(algos)*len(Ks)*len(deltas)
+    # num_par_proc = 10
+    # Parallel(n_jobs=num_par_proc, verbose=10)(delayed(run_algo_par)(i, deltas, Ks, algos, num_repeat, T) for i in range(tot_num_proc))
+    plot_all_graphs(deltas, Ks, algos, num_repeat)
 
 
 if __name__ == '__main__':
