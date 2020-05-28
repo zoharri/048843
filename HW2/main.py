@@ -164,9 +164,9 @@ def main():
     T = 10e7
     num_repeat = 10
 
-    # tot_num_proc = num_repeat*len(algos)*len(Ks)*len(deltas)
-    # num_par_proc = 10
-    # Parallel(n_jobs=num_par_proc, verbose=10)(delayed(run_algo_par)(i, deltas, Ks, algos, num_repeat, T) for i in range(tot_num_proc))
+    tot_num_proc = num_repeat*len(algos)*len(Ks)*len(deltas)
+    num_par_proc = 10
+    Parallel(n_jobs=num_par_proc, verbose=10)(delayed(run_algo_par)(i, deltas, Ks, algos, num_repeat, T) for i in range(tot_num_proc))
     plot_all_graphs(deltas, Ks, algos, num_repeat)
 
 
