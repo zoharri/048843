@@ -39,6 +39,7 @@ def plot_all_graphs(deltas, Ks, algos, num_repeat):
     cols_num = len(Ks)
     plt.figure("regrets", figsize=(20, 10))
     plt.figure("exploration_index", figsize=(20, 10))
+    plt.figure("var_regrets", figsize=(20, 10))
     # plt.figure("means", figsize=(20, 10))
     for al_idx, algo in enumerate(algos):
         for c, K in enumerate(Ks):
@@ -49,10 +50,8 @@ def plot_all_graphs(deltas, Ks, algos, num_repeat):
                     with open(load_path, 'rb') as handle:
                         statistics = pickle.load(handle)
                         all_stats.append(statistics)
-                plt.figure("regrets")
-                plt.subplot(rows_num, cols_num, r*cols_num + c + 1)
-                plt.title("K = {}, delta = {}".format(K, delta))
-                plot_regret(all_stats, delta, al_idx)
+
+                plot_regret(all_stats, delta, al_idx, rows_num, cols_num, r, c, K)
 
                 plt.figure("exploration_index")
                 plt.subplot(rows_num, cols_num, r * cols_num + c + 1)
@@ -64,18 +63,22 @@ def plot_all_graphs(deltas, Ks, algos, num_repeat):
                 # plot_means(all_stats, al_idx)
 
     plt.figure("regrets")
-    plt.figlegend(["greedy", "ucb1", "ucbv", "thompson a=b=1", "thompson a=b=2", "thompson a=b=3"], loc='lower center', ncol=5, labelspacing=0.)
+    plt.figlegend(algos, loc='lower center', ncol=5, labelspacing=0.)
     plt.suptitle("Regrets")
     plt.savefig("./results/regrets.png")
+    plt.figure("var_regrets")
+    plt.figlegend(algos, loc='lower center', ncol=5, labelspacing=0.)
+    plt.suptitle("Regrets STD")
+    plt.savefig("./results/var_regrets.png")
     plt.figure("exploration_index")
     plt.suptitle("Exploration Index")
-    plt.figlegend(["greedy", "ucb1", "ucbv", "thompson a=b=1", "thompson a=b=2", "thompson a=b=3"], loc='lower center', ncol=5, labelspacing=0.)
+    plt.figlegend(algos, loc='lower center', ncol=5, labelspacing=0.)
     plt.savefig("./results/exploration_index.png")
     # plt.figure("means")
     # plt.savefig("./results/means.png")
 
 
-def plot_regret(all_stats, delta, al_idx):
+def plot_regret(all_stats, delta, al_idx, rows_num, cols_num, r, c, K):
     """
     Plot the mean regret with std
     :param all_stats: all of the statistics gathered during the current algo run
@@ -91,10 +94,18 @@ def plot_regret(all_stats, delta, al_idx):
     mean_regrets = np.mean(regrets, axis=0)
     var_regrets = np.var(regrets, axis=0)
 
+    plt.figure("regrets")
+    plt.subplot(rows_num, cols_num, r * cols_num + c + 1)
+    plt.title("K = {}, delta = {}".format(K, delta))
     plt.plot(range(T), mean_regrets,
                      color=colors[al_idx])
-    plt.fill_between(range(T), mean_regrets - np.sqrt(var_regrets), mean_regrets + np.sqrt(var_regrets),
-                 color=colors[al_idx], alpha=0.2)
+    plt.figure("var_regrets")
+    plt.subplot(rows_num, cols_num, r * cols_num + c + 1)
+    plt.title("K = {}, delta = {}".format(K, delta))
+    plt.plot(range(T), np.sqrt(var_regrets),
+             color=colors[al_idx])
+    # plt.fill_between(range(T), mean_regrets - np.sqrt(var_regrets), mean_regrets + np.sqrt(var_regrets),
+    #              color=colors[al_idx], alpha=0.2)
 
 
 def plot_exploration_index(all_stats, al_idx):
@@ -114,8 +125,8 @@ def plot_exploration_index(all_stats, al_idx):
 
     plt.plot(range(T), mean_regrets,
                      color=colors[al_idx])
-    plt.fill_between(range(T), mean_regrets - np.sqrt(var_regrets), mean_regrets + np.sqrt(var_regrets),
-                 color=colors[al_idx], alpha=0.2)
+    # plt.fill_between(range(T), mean_regrets - np.sqrt(var_regrets), mean_regrets + np.sqrt(var_regrets),
+    #              color=colors[al_idx], alpha=0.2)
 
 
 def plot_means(all_stats, al_idx):
@@ -143,14 +154,14 @@ def main():
     The main function
     """
     # deltas = [0.01]
-    deltas = [0.1, 0.01]
+    deltas = [0.1,0.01]
     # Ks = [100]
-    Ks = [2, 10, 100]
+    Ks = [2,10,100]
     # algos = ["ucbv"]
     algos = ["greedy", "ucb1", "ucbv", "thompson1", "thompson2", "thompson3"]
-    # algos = ["thompson2", "thompson3"]
+    # algos = ["ucb1", "ucbv"]
 
-    T = 10 ** 7
+    T = 10e7
     num_repeat = 10
 
     # tot_num_proc = num_repeat*len(algos)*len(Ks)*len(deltas)
